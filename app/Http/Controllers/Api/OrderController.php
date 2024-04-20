@@ -39,7 +39,7 @@ class OrderController extends Controller
         $order->id = Order::all()->count() + 1; //checked
         $order->user_id = $request->user()->id; //checked 
         $order->order_amount = $request['order_amount']; //checked 
-        $order->payment_status = 'pending'; //checked 
+        $order->payment_status = 'Pending'; //checked 
         $order->order_note = $request['order_note']; //checked
         $order->delivery_address = json_encode($address); //checked
         //$order->otp = rand(1000, 9999); //checked
@@ -112,9 +112,9 @@ class OrderController extends Controller
     {
         $orders = Order::withCount('details')->where(['user_id' => $request->user()->id])->get()->map(function ($data) {
             $data['delivery_address'] = $data['delivery_address'] ? json_decode($data['delivery_address']) : $data['delivery_address'];
-
             return $data;
         });
+
         if ($orders->isNotEmpty()) {
             return response()->json($orders, 200);
         } else {
