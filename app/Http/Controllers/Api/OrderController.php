@@ -121,4 +121,10 @@ class OrderController extends Controller
             return response()->json(['message' => 'No orders found.'], 404);
         }
     }
+
+    public function get_history_order(Request $request)
+    {
+        $orders = Order::with('details')->where('user_id', $request->user()->id)->get();
+        return response()->json($orders, 200);
+    }
 }

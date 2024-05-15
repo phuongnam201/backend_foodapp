@@ -97,8 +97,8 @@ class PayOsController extends Controller
         //dd($orderCode);
 
         $payOS = new PayOS($this->payOSClientId, $this->payOSApiKey, $this->payOSChecksumKey);
-        $response = $payOS->getPaymentLinkInformation($orderCode);      
-    
+        $response = $payOS->getPaymentLinkInformation($orderCode);     
+        dd($response);
         if ($response['status'] == 'PAID') {
             DB::table('orders')
                 ->where('id', $orderCode)
