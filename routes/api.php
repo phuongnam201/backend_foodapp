@@ -44,8 +44,9 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('customer')->group(function () {
             Route::prefix('order')->group(function () {
                 Route::get('list', [OrderController::class, 'get_order_list']);
+                Route::get('ord-details-list', [OrderController::class, 'get_history_order']);
+                Route::get('order-history', [OrderController::class, 'get_all_infor_history_order']);
                 Route::post('place', [OrderController::class, 'place_order']);
-                Route::get('order_history', [OrderController::class, 'get_history_order']);
             });
         });
         Route::prefix('customer')->group(function () {

@@ -122,9 +122,29 @@ class OrderController extends Controller
         }
     }
 
+    public function get_all_infor_history_order(Request $request)
+    {
+        $orders = Order::with('details')->where('user_id', $request->user()->id)->get();
+        // Kiểm tra xem mảng $orderDetails có dữ liệu không
+        if (!$orders->isEmpty()) {
+            return response()->json($orders, 200);
+        } else {
+            return response()->json(["message" => "Không có đơn hàng"], 404);
+        }
+    }
+
     public function get_history_order(Request $request)
     {
         $orders = Order::with('details')->where('user_id', $request->user()->id)->get();
-        return response()->json($orders, 200);
+        $orderDetails = [];
+        foreach ($orders as $order) {
+            $orderDetails[] = $order->details;
+        }
+        // Kiểm tra xem mảng $orderDetails có dữ liệu không
+        if (!empty($orderDetails)) {
+            return response()->json($orderDetails, 200);
+        } else {
+            return response()->json(["message" => "Không có đơn hàng"], 404);
+        }
     }
 }

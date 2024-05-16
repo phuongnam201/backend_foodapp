@@ -18,7 +18,10 @@ class FoodController extends Controller
         if ($food->count() > 0) {
             return response([
                 'message' => "success",
-                'results' => $food,
+                'total_size' => $$food->count(),
+                'type_id' => 0,
+                'offset' => 0,
+                'products' => $food,
             ], 200);
         } else {
             return response([
@@ -73,12 +76,12 @@ class FoodController extends Controller
     }
 
     public function search_products(Request $request)
-    {   
+    {
         $keyword = $request->input('keyword');
         $search_by = $request->input('search_by', 'name'); // Mặc định tìm kiếm theo tên
 
         $foods = Food::search($keyword, $search_by);
-        
+
         if ($foods->count() > 0) {
             return response([
                 'message' => 'success',
