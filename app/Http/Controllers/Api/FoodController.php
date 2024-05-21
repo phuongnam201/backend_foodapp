@@ -81,22 +81,23 @@ class FoodController extends Controller
         $search_by = $request->input('search_by', 'name'); // Mặc định tìm kiếm theo tên
 
         $foods = Food::search($keyword, $search_by);
+        $result = $foods->paginate(10);
 
         if ($foods->count() > 0) {
             return response([
                 'message' => 'success',
                 'total_size' => $foods->count(),
+                'type_id' => 0,
                 'offset' => 0,
-                'products' => $foods,
+                'products' => $result,
             ], 200);
         } else {
             return response([
                 'message' => 'error',
                 'message' => 'Không có thức ăn phổ biến nào trong danh sách',
-            ], 200);
+            ], 404);
         }
     }
-
     /**
      * Show the form for creating a new resource.
      */

@@ -11,7 +11,7 @@ class Food extends Model
     public static function search($keyword, $search_by = 'name')
     {
         return self::where(function ($query) use ($search_by, $keyword) {
-            $query->where($search_by, 'like', '%'.$keyword.'%');
-        })->get();
+            $query->where($search_by, 'like', '%' . $keyword . '%');
+        });
     }
 }
