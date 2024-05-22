@@ -135,14 +135,15 @@ class OrderController extends Controller
 
     public function get_history_order(Request $request)
     {
+        // Lấy tất cả các đơn hàng của người dùng, bao gồm cả chi tiết
         $orders = Order::with('details')->where('user_id', $request->user()->id)->get();
-        $orderDetails = [];
-        foreach ($orders as $order) {
-            $orderDetails[] = $order->details;
-        }
-        // Kiểm tra xem mảng $orderDetails có dữ liệu không
-        if (!empty($orderDetails)) {
-            return response()->json($orderDetails, 200);
+
+        // Lấy tất cả chi tiết đơn hàng từ các đơn hàng
+        $orderDetails = $orders->pluck('details')->flatten();
+
+        // Kiểm tra xem có chi tiết đơn hàng nào không
+        if ($orderDetails->isNotEmpty()) {
+            return response()->json(['results' => $orderDetails], 200);
         } else {
             return response()->json(["message" => "Không có đơn hàng"], 404);
         }

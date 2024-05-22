@@ -18,7 +18,7 @@ class FoodController extends Controller
         if ($food->count() > 0) {
             return response([
                 'message' => "success",
-                'total_size' => $$food->count(),
+                'total_size' => $food->count(),
                 'type_id' => 0,
                 'offset' => 0,
                 'products' => $food,

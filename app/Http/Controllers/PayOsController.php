@@ -20,7 +20,8 @@ class PayOsController extends Controller
         $this->payOSChecksumKey = env("PAYOS_CHECKSUM_KEY");
     }
 
-    public function createPaymentLink(Request $request) {
+    public function createPaymentLink(Request $request)
+    {
         $order = Order::with(['details'])->where(['id' => session('order_id')])->first();
         //dd($order);
         $YOUR_DOMAIN = env("APP_URL");
@@ -90,15 +91,15 @@ class PayOsController extends Controller
     }
 
     public function handlePayosReturn(Request $request)
-    {   
+    {
         $id_order_vietqr = $request->input('id');
         $orderCode = $request->input('orderCode');
         //$status = $request->input('status');
         //dd($orderCode);
 
         $payOS = new PayOS($this->payOSClientId, $this->payOSApiKey, $this->payOSChecksumKey);
-        $response = $payOS->getPaymentLinkInformation($orderCode);     
-        dd($response);
+        $response = $payOS->getPaymentLinkInformation($orderCode);
+        //dd($response);
         if ($response['status'] == 'PAID') {
             DB::table('orders')
                 ->where('id', $orderCode)
@@ -111,7 +112,7 @@ class PayOsController extends Controller
                     'updated_at' => now()
                 ]);
             return redirect()->route('payment-status', ['status' => 'success']);
-        } else if($response['status'] == 'CANCELLED') {
+        } else if ($response['status'] == 'CANCELLED') {
             DB::table('orders')
                 ->where('id', $orderCode)
                 ->update([
@@ -123,19 +124,20 @@ class PayOsController extends Controller
                     'updated_at' => now()
                 ]);
             return redirect()->route('payment-status', ['status' => 'cancel']);
-        }else{
+        } else {
             return view('payment-result')->with('message', 'Invalid signature!');
         }
     }
 
-    public function showPaymentResult(Request $request) {
+    public function showPaymentResult(Request $request)
+    {
         $status = $request->input('status');
-    
+
         if ($status == 'success') {
             return view('payment-result')->with('message', 'Payment successfully!');
-        } else if($status == 'cancel') {
+        } else if ($status == 'cancel') {
             return view('payment-result')->with('message', 'Payment has been cancelled!');
-        }else{
+        } else {
             return view('payment-result')->with('message', 'Invalid signature!');
         }
     }

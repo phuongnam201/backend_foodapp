@@ -137,8 +137,7 @@
                             @elseif($row->type == 'rich_text_box')
                                 @if ($row->field == 'food_details')
                                     @php
-                                        $food_details = json_decode($dataTypeContent->{$row->field});
-                                        // dd($food_details);
+                                        $food_details = json_decode($dataTypeContent->{$row->field}, true); // Chuyển JSON thành mảng liên kết
                                     @endphp
                                     <table class="table">
                                         <thead class="thead-dark">
@@ -151,14 +150,15 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>{{ $food_details->name }}</td>
-                                                <td>{{ $food_details->price }}</td>
+                                                <th scope="row">{{}}</th>
+                                                <td>{{ $food['name'] }}</td>
+                                                <td>{{ $food['price'] }}</td>
                                                 <td>
                                                     <img style="width: 100px; object-fit: cover"
-                                                        src="{{ Voyager::image($food_details->img) }}" alt="">
+                                                        src="{{ Voyager::image($food['img']) }}" alt="">
                                                 </td>
                                             </tr>
+
                                         </tbody>
                                     </table>
                                 @else
