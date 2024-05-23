@@ -39,13 +39,33 @@ class OrderController extends Controller
         $order->id = Order::all()->count() + 1; //checked
         $order->user_id = $request->user()->id; //checked 
         $order->order_amount = $request['order_amount']; //checked 
-        $order->payment_status = 'Pending'; //checked 
+        //$order->payment_status = 'Pending'; //checked 
         $order->order_note = $request['order_note']; //checked
+        //$order->order_type = $request['order_type']; //checked
         $order->delivery_address = json_encode($address); //checked
         //$order->otp = rand(1000, 9999); //checked
         $order->pending = now(); //checked
         $order->created_at = now(); //checked
         $order->updated_at = now(); //checked
+        $order->order_type = $request['order_type'];
+
+
+        /** test */
+        $order->payment_status = $request['payment_method'] == 'wallet' ? 'Unpaid' : 'Pending';
+        $order->order_status = $request['payment_method'] == 'digital_payment' ? 'failed' : ($request->payment_method == 'wallet' ? 'Comfirmed' : 'Pending');
+        $order->payment_method = $request->payment_method;
+
+        $scheduled_at = $request->scheduled_at ? \Carbon\Carbon::parse($request->scheduled_at) : now();
+
+        if ($request->scheduled_at && $scheduled_at < now()) {
+            return response()->json([
+                'errors' => [
+                    ['code' => 'order_time', 'message' => trans('messages.you_can_not_scheduled_a_order_in_past')]
+                ]
+            ], 406);
+        }
+        $order->scheduled_at = $scheduled_at;
+        $order->scheduled = $request->scheduled_at ? 1 : 0;
 
         foreach ($request['cart'] as $c) {
 
@@ -103,7 +123,7 @@ class OrderController extends Controller
 
         return response()->json([
             'errors' => [
-                ['code' => 'order_time', 'message' => trans('messages.failed_to_place_order')]
+                ['code' => 'order_time', 'message' =>  +trans('messages.failed_to_place_order')]
             ]
         ], 403);
     }
