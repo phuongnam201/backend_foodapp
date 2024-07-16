@@ -20,26 +20,25 @@ class CustomerAuthController extends Controller
             'password' => 'required|string',
         ]);
         //check email
-        $user = Customer::where('email',$fields['email'])->first();
+        $user = Customer::where('email', $fields['email'])->first();
 
         //check password
-        if(!$user || !Hash::check($fields['password'],$user->password)){
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Bad creds',
-            ],401);
+            ], 401);
         }
-        if($user->status == 'lock' || $user->status == 'banned'){
+        if ($user->status == 'lock' || $user->status == 'banned') {
             return response([
                 'message' => 'Tài khoản của bạn đã bị khoá hoặc bị cấm',
-            ],400);
+            ], 400);
         }
         $token = $user->createToken('mytoken_player')->plainTextToken;
         $results = [
             'email_verified_at' => $user->email_verified_at,
             'token' => $token
         ];
-        return response($results,200);
-
+        return response($results, 200);
     }
 
     public function register(Request $request)
@@ -59,9 +58,9 @@ class CustomerAuthController extends Controller
         $token = $player->createToken('mytoken_player')->plainTextToken;
         return response([
             //'results' => $player,
-            'token'=>$token,
+            'token' => $token,
             'is_phone_verified' => 0,
-        ],200);
+        ], 200);
     }
 
     public function forgot_password(Request $request)
@@ -70,14 +69,16 @@ class CustomerAuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-        $user = Customer::where('username',$fields['username'])->first();
+        $user = Customer::where('username', $fields['username'])->first();
         $user->password =  bcrypt($fields['password']);
         $user->save();
         return response([
             'results' => $user,
-        ],200);
-
+        ], 200);
     }
+
+
+
     // public function logout(Request $request)
     // {
     //     // dd(auth()->user()->tokens());

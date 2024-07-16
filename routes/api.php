@@ -38,7 +38,7 @@ Route::prefix('/v1')->group(function () {
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        Route::post('/logout', [CustomerAuthController::class, 'logout']);
+        // Route::post('/logout', [CustomerAuthController::class, 'logout']);
         Route::post('/forgot-password', [CustomerAuthController::class, 'forgot_password']);
 
         Route::prefix('customer')->group(function () {
@@ -51,6 +51,7 @@ Route::prefix('/v1')->group(function () {
         });
         Route::prefix('customer')->group(function () {
             Route::get('info', [CustomerController::class, 'info']);
+            Route::post('update-info', [CustomerController::class, 'updateInformation']);
             Route::get('address/list', [CustomerController::class, 'address_list']);
             Route::post('address/add', [CustomerController::class, 'add_new_address']);
             Route::post('address/update/{id}', [CustomerController::class, 'update_address']);

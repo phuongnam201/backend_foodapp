@@ -1,11 +1,18 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^public
-    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Không chuyển hướng các yêu cầu đến /admin để tránh vòng lặp
+    RewriteCond %{REQUEST_URI} !^/public/admin
+
+    # Chuyển hướng tất cả các yêu cầu khác đến trang admin
+    RewriteRule ^(.*)$ https://nswgaming.click/public/admin [R=301,L]
+
 </IfModule>
 
 # php -- BEGIN cPanel-generated handler, do not edit
+
 # Set the “ea-php81” package as the default “PHP” programming language.
+
 <IfModule mime_module>
   AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
 </IfModule>

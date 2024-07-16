@@ -51,9 +51,9 @@
                 <div id="embed-api-auth-container"></div>
             @else
                 <!-- <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                        {!! __('voyager::analytics.no_client_id') !!}
-                        <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
-                    </p> -->
+                            {!! __('voyager::analytics.no_client_id') !!}
+                            <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
+                        </p> -->
             @endif
 
             <div class="Dashboard Dashboard--full" id="analytics-dashboard">
@@ -261,7 +261,7 @@
             pieChart, {
                 type: 'pie',
                 data: {
-                    labels: ['Successful orders', 'Cancelled orders'],
+                    labels: ['Đơn hàng thành công', 'Đơn hàng thất bại'],
                     datasets: [{
                         label: '',
                         data: dataOrder,
@@ -854,7 +854,7 @@
                             labels: labels,
                             datasets: [{
                                     label: '{{ __('
-                                                                                                                                        voyager::date.last_week ') }}',
+                                                                                                                                                                            voyager::date.last_week ') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     pointColor: 'rgba(220,220,220,1)',
@@ -863,7 +863,7 @@
                                 },
                                 {
                                     label: '{{ __('
-                                                                                                                                        voyager::date.this_week ') }}',
+                                                                                                                                                                            voyager::date.this_week ') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     pointColor: 'rgba(151,187,205,1)',
@@ -929,14 +929,14 @@
                                 labels: labels,
                                 datasets: [{
                                         label: '{{ __('
-                                                                                                                                                        voyager::date.last_year ') }}',
+                                                                                                                                                                                                voyager::date.last_year ') }}',
                                         fillColor: 'rgba(220,220,220,0.5)',
                                         strokeColor: 'rgba(220,220,220,1)',
                                         data: data2
                                     },
                                     {
                                         label: '{{ __('
-                                                                                                                                                        voyager::date.this_year ') }}',
+                                                                                                                                                                                                voyager::date.this_year ') }}',
                                         fillColor: 'rgba(151,187,205,0.5)',
                                         strokeColor: 'rgba(151,187,205,1)',
                                         data: data1

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\CustomerAddress;
+use App\Customer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -91,5 +92,42 @@ class CustomerController extends Controller
         ];
         DB::table('customer_addresses')->where('user_id', $request->user()->id)->update($address);
         return response()->json(['message' => trans('messages.updated_successfully'), 'zone_id' => 1], 200);
+    }
+
+    public function updateInformation(Request $request)
+    {
+
+        $user = $request->user();
+
+        $customer = Customer::where('id', $user->id)->firstOrFail();
+        $fields = $request->validate([
+            'f_name' => 'sometimes|required|string',
+            'email' => 'sometimes|required|email|unique:customers,email,' . $customer->id,
+            'phone' => 'sometimes|required|string|unique:customers,phone,' . $customer->id,
+            'password' => 'sometimes|required|string',
+        ]);
+
+        // Update customer information if the fields are provided
+        if (isset($fields['f_name'])) {
+            $customer->f_name = $fields['f_name'];
+        }
+        if (isset($fields['email'])) {
+            $customer->email = $fields['email'];
+        }
+        if (isset($fields['phone'])) {
+            $customer->phone = $fields['phone'];
+        }
+        if (isset($fields['password'])) {
+            $customer->password = bcrypt($fields['password']);
+        }
+
+        // Save the updated customer information
+        $customer->save();
+
+        // Return a success response
+        return response([
+            'message' => 'Customer information updated successfully',
+            'results' => $customer,
+        ], 200);
     }
 }
