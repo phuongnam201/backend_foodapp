@@ -7,8 +7,9 @@ step 3: import file database to MySQL in xampp
 step 4: after extra put folder food and user to root/backend_food/storage/app/public  
 step 5: edit file .env and put your key map and key payment.  
 step 6: run command: composer install and php artisan storage:link  
-step 7: php artisan serve  
-step 8: log in to the admin panel.  
+step 7: php artisan generate:key
+step 8: php artisan serve  
+step 9: log in to the admin panel.  
 account information:  
 username: admin@admin.com  
 password: password  
